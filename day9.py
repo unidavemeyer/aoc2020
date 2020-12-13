@@ -38,6 +38,25 @@ class Xmas:
 
         return False
 
+    def LNumFindSum(self, numFind):
+
+        for iNumFirst in range(len(self.m_lNum)):
+            # scan the contiguous range starting at iNumFirst
+            numSum = self.m_lNum[iNumFirst]
+            iNumLast = iNumFirst
+
+            while iNumLast < len(self.m_lNum):
+                iNumLast += 1
+                numSum += self.m_lNum[iNumLast]
+                if numSum == numFind:
+                    return self.m_lNum[iNumFirst:iNumLast+1]
+                elif numSum > numFind:
+                    break
+
+        # sad panda
+
+        return []
+
 def Part1():
     # check for errors in XMAS encoding - valid if number is sum of two distinct elements of previous 25 numbers
     #  (but sample data is done with window of 5 instead of 25)
@@ -56,7 +75,21 @@ def Part1():
     print("Part 1: Invalid:", xmas.m_lNum[iNum], "(entry at", iNum, ")")
 
 def Part2():
-    print("Part 2:")
+    # find contiguous range of numbers that sum to a given value, and then report the sum of the smallest and largest
+    #  values in that range
+
+    numFind = 257342611
+
+    xmas = Xmas(day9in.strIn)
+    lNum = xmas.LNumFindSum(numFind)
+
+    numMin = lNum[0]
+    numMax = lNum[0]
+    for num in lNum[1:]:
+        numMin = min(num, numMin)
+        numMax = max(num, numMax)
+
+    print("Part 2: Sum:", numMin + numMax, "from", numMin, numMax)
 
 if __name__ == '__main__':
     Part1()
